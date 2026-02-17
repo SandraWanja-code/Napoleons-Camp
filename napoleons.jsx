@@ -1,0 +1,346 @@
+import React, { useMemo, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  Calendar,
+  Users,
+  Canoe,
+  Camera,
+  PhoneCall,
+  Mail,
+  MapPin,
+  Clock,
+  BadgeDollarSign,
+  Download,
+  CheckCircle2,
+  Info
+} from "lucide-react";
+
+// ===== Utility helpers =====
+const currency = (n) => new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(n);
+
+const packages = [
+  { id: "thrill", name: "Whitewater Thrill Run", duration: "2.5 hrs", desc: "Fast rapids, cliff jumps, and splash zones.", price: 55 },
+  { id: "scenic", name: "Scenic River Float", duration: "1.5 hrs", desc: "Gentle cruise through pristine river bends.", price: 35 },
+  { id: "full", name: "Full Day Adventure", duration: "6 hrs", desc: "Morning rapids + picnic + waterfall stop.", price: 95 },
+];
+
+const addOns = [
+  { id: "gopro", label: "GoPro Photo & Video Pack", price: 12 },
+  { id: "bbq", label: "Riverside BBQ Lunch", price: 9 },
+  { id: "transfer", label: "Nairobi ↔ Camp Transfers", price: 18 },
+];
+
+const timeSlots = ["08:00", "10:30", "13:00", "15:30"];
+
+const gallery = [
+  // Unsplash hotlinks (royalty-free); swap with your own later
+  "https://images.unsplash.com/photo-1542044801-1a8c68a05b0e?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1529160972935-0f40b515d0ec?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1473445195779-2296a9f81f39?q=80&w=1600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1487730116645-74489c95b41b?q=80&w=1600&auto=format&fit=crop",
+];
+
+// ===== Main App =====
+export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [party, setParty] = useState(2);
+  const [pkg, setPkg] = useState(packages[0].id);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState(timeSlots[0]);
+  const [selectedAddOns, setSelectedAddOns] = useState([]);
+  const [notes, setNotes] = useState("");
+  const [bookings, setBookings] = useState(() => JSON.parse(localStorage.getItem("nrc_bookings") || "[]"));
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("nrc_bookings", JSON.stringify(bookings));
+  }, [bookings]);
+
+  const pkgObj = useMemo(() => packages.find(p => p.id === pkg), [pkg]);
+  const addOnsTotal = useMemo(() => selectedAddOns
+    .map(id => addOns.find(a => a.id === id)?.price || 0)
+    .reduce((a, b) => a + b, 0), [selectedAddOns]);
+  const subtotal = useMemo(() => (pkgObj?.price || 0) * party + addOnsTotal * party, [pkgObj, party, addOnsTotal]);
+  const tax = useMemo(() => subtotal * 0.12, [subtotal]);
+  const total = useMemo(() => subtotal + tax, [subtotal, tax]);
+
+  const toggleAddon = (id) => setSelectedAddOns(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+
+  const valid = name && email && phone && date && time && party > 0;
+
+  const submitBooking = (e) => {
+    e.preventDefault();
+    if (!valid) return;
+    const record = {
+      id: crypto.randomUUID(),
+      ts: new Date().toISOString(),
+      name, email, phone, party, pkg, date, time, notes, selectedAddOns,
+      total,
+    };
+    setBookings(prev => [record, ...prev]);
+    setSubmitted(true);
+    // Reset except contact for quicker repeat
+    setParty(2); setPkg(packages[0].id); setDate(""); setTime(timeSlots[0]); setSelectedAddOns([]); setNotes("");
+    setTimeout(() => setSubmitted(false), 4500);
+  };
+
+  const exportCSV = () => {
+    const rows = [
+      ["ID","Timestamp","Name","Email","Phone","Party","Package","Date","Time","AddOns","Notes","Total"],
+      ...bookings.map(b => [b.id,b.ts,b.name,b.email,b.phone,b.party,packages.find(p=>p.id===b.pkg)?.name,b.date,b.time,b.selectedAddOns.join("|"),b.notes,b.total])
+    ];
+    const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "napoleons_rafting_bookings.csv"; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="min-h-screen bg-neutral-950 text-neutral-100">
+      {/* Nav */}
+      <header className="sticky top-0 z-40 backdrop-blur bg-neutral-950/70 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <a href="#hero" className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-400 grid place-items-center">
+              <Canoe className="h-6 w-6 text-neutral-900" />
+            </div>
+            <span className="font-extrabold tracking-tight text-lg sm:text-xl">Napoleon’s Rafting Camp</span>
+          </a>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <a href="#experiences" className="hover:text-white/90">Experiences</a>
+            <a href="#gallery" className="hover:text-white/90">Gallery</a>
+            <a href="#pricing" className="hover:text-white/90">Pricing</a>
+            <a href="#booking" className="hover:text-white/90">Book</a>
+            <a href="#contact" className="hover:text-white/90">Contact</a>
+          </nav>
+          <button onClick={()=>setMenuOpen(v=>!v)} className="md:hidden inline-flex items-center px-3 py-2 rounded-xl border border-white/10">Menu</button>
+        </div>
+        {menuOpen && (
+          <div className="md:hidden border-t border-white/10">
+            <div className="max-w-7xl mx-auto px-4 py-3 grid gap-2 text-sm">
+              {[["experiences","Experiences"],["gallery","Gallery"],["pricing","Pricing"],["booking","Book"],["contact","Contact"]].map(([id,label])=>
+                <a key={id} href={`#${id}`} onClick={()=>setMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-white/5">{label}</a>
+              )}
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Hero */}
+      <section id="hero" className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1529669851596-ba9a5542a4a9?q=80&w=2400&auto=format&fit=crop" alt="Rafting river" className="w-full h-full object-cover opacity-60" loading="eager" />
+          <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/70 via-neutral-950/60 to-neutral-950" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-6 py-28 sm:py-36">
+          <motion.h1 initial={{opacity:0, y:12}} animate={{opacity:1, y:0}} transition={{duration:0.6}} className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
+            Rush of the River.
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-emerald-300">Magic of the Valley.</span>
+          </motion.h1>
+          <motion.p initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.15}} className="mt-6 max-w-2xl text-white/80">
+            Welcome to Napoleon’s Rafting Camp — home to world‑class rapids, warm guides, and sunsets that linger.
+          </motion.p>
+          <motion.div initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.25}} className="mt-10 flex flex-wrap items-center gap-4">
+            <a href="#booking" className="px-6 py-3 rounded-2xl font-semibold bg-gradient-to-r from-cyan-400 to-emerald-400 text-neutral-900 shadow-lg shadow-cyan-500/10">Book Your Run</a>
+            <a href="#gallery" className="px-6 py-3 rounded-2xl font-semibold border border-white/15 hover:bg-white/5">See the River</a>
+          </motion.div>
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-white/70">
+            {[
+              {icon: Calendar, k: "Daily Trips"},
+              {icon: Users, k: "All Levels"},
+              {icon: Camera, k: "Photo/Video"},
+              {icon: Clock, k: "2–6 hrs"},
+            ].map(({icon:Icon,k})=> (
+              <div key={k} className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+                <Icon className="h-4 w-4" /> <span>{k}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experiences */}
+      <section id="experiences" className="max-w-7xl mx-auto px-6 py-20">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Pick your adventure</h2>
+        <p className="mt-2 text-white/70 max-w-2xl">Small-group rafts, expert safety briefings, and optional cliff jumps. Choose calm and scenic or big, bouncy rapids.</p>
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {packages.map(p => (
+            <motion.div key={p.id} whileHover={{y:-4}} className={`rounded-2xl overflow-hidden border ${pkg===p.id?"border-emerald-400/70":"border-white/10"} bg-white/5`}>
+              <img src={{thrill: gallery[0], scenic: gallery[1], full: gallery[2] }[p.id]} alt={p.name} className="h-40 w-full object-cover" loading="lazy" />
+              <div className="p-5">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-lg">{p.name}</h3>
+                  <span className="text-sm text-white/70">{p.duration}</span>
+                </div>
+                <p className="mt-2 text-sm text-white/70">{p.desc}</p>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="text-xl font-extrabold">{currency(p.price)} <span className="text-xs text-white/60">pp</span></div>
+                  <button onClick={()=>setPkg(p.id)} className={`px-4 py-2 rounded-xl text-sm font-semibold ${pkg===p.id?"bg-emerald-400 text-neutral-900":"border border-white/15"}`}>{pkg===p.id?"Selected":"Choose"}</button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section id="gallery" className="px-6 py-20 bg-gradient-to-b from-neutral-950 to-neutral-900 border-y border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">River moments</h2>
+          <p className="mt-2 text-white/70 max-w-2xl">All photos are placeholders from Unsplash — swap in your own or we can generate bespoke AI shots to match your brand palette.</p>
+          <div className="mt-8 grid md:grid-cols-3 gap-4">
+            {gallery.map((src, i) => (
+              <motion.div key={i} initial={{opacity:0, y:8}} whileInView={{opacity:1, y:0}} viewport={{once:true}} className="relative group overflow-hidden rounded-2xl border border-white/10">
+                <img src={src} alt={`Rafting ${i+1}`} className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="max-w-7xl mx-auto px-6 py-20">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Transparent pricing</h2>
+        <p className="mt-2 text-white/70 max-w-2xl">Per person prices. Group discounts auto‑apply at checkout.</p>
+        <div className="mt-8 grid lg:grid-cols-3 gap-6">
+          {packages.map((p, idx) => (
+            <div key={p.id} className={`rounded-2xl border ${idx===2?"border-cyan-400/60":"border-white/10"} bg-white/5 p-6 flex flex-col gap-3`}>
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-xl">{p.name}</h3>
+                <BadgeDollarSign className="h-5 w-5" />
+              </div>
+              <div className="text-4xl font-extrabold">{currency(p.price)} <span className="text-sm text-white/60">per person</span></div>
+              <ul className="text-sm text-white/70 list-disc ml-5 space-y-1">
+                <li>All gear included (helmets, PFDs)</li>
+                <li>Safety kayak + guide</li>
+                <li>Free lockers & hot showers</li>
+              </ul>
+              <button onClick={()=>setPkg(p.id)} className="mt-2 px-4 py-2 rounded-xl font-semibold border border-white/15 hover:bg-white/10">Choose {p.name.split(" ")[0]}</button>
+            </div>
+          ))}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <div className="flex items-center gap-2 text-sm text-white/80"><Info className="h-4 w-4" /> Dynamic pricing tips</div>
+            <p className="mt-2 text-white/70 text-sm">Weekdays and early slots (08:00) are usually quieter. Groups 6+ get <span className="font-semibold">10% off</span> automatically.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Booking */}
+      <section id="booking" className="px-6 py-20 bg-neutral-900 border-y border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Book your run</h2>
+          <p className="mt-2 text-white/70 max-w-2xl">Instant confirmation on this device. We’ll email details and a packing list. Payment can be completed on arrival or via link we send you.</p>
+
+          <div className="mt-8 grid lg:grid-cols-2 gap-8">
+            <form onSubmit={submitBooking} className="rounded-2xl border border-white/10 bg-white/5 p-6 grid gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <label className="grid gap-1 text-sm">Full name<input value={name} onChange={e=>setName(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl" placeholder="Sandra Kamau" required/></label>
+                <label className="grid gap-1 text-sm">Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl" placeholder="you@email.com" required/></label>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                <label className="grid gap-1 text-sm">Phone<input value={phone} onChange={e=>setPhone(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl" placeholder="+254 7xx xxx xxx" required/></label>
+                <label className="grid gap-1 text-sm">Date<input type="date" value={date} onChange={e=>setDate(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl" required/></label>
+                <label className="grid gap-1 text-sm">Time<select value={time} onChange={e=>setTime(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl">{timeSlots.map(t=> <option key={t}>{t}</option>)}</select></label>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4 items-end">
+                <label className="grid gap-1 text-sm">Party size<input type="number" min={1} value={party} onChange={e=>setParty(Math.max(1, Number(e.target.value)))} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl"/></label>
+                <label className="grid gap-1 text-sm">Package<select value={pkg} onChange={e=>setPkg(e.target.value)} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl">{packages.map(p=> <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
+                <div className="text-sm text-white/70">Group 6+ auto‑discount 10%</div>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {addOns.map(a => (
+                  <label key={a.id} className="flex items-center gap-3 text-sm bg-neutral-900/60 border border-white/10 rounded-xl px-3 py-2">
+                    <input type="checkbox" checked={selectedAddOns.includes(a.id)} onChange={()=>toggleAddon(a.id)} />
+                    <span className="flex-1">{a.label}</span>
+                    <span className="text-white/70">{currency(a.price)}</span>
+                  </label>
+                ))}
+              </div>
+              <label className="grid gap-1 text-sm">Notes (optional)
+                <textarea value={notes} onChange={e=>setNotes(e.target.value)} rows={3} className="mt-1 px-3 py-2 bg-neutral-900/60 border border-white/10 rounded-xl" placeholder="Tell us about birthdays, dietary needs, or transport preferences..."/>
+              </label>
+
+              {/* Summary */}
+              <div className="rounded-xl border border-white/10 p-4 grid sm:grid-cols-2 gap-4 bg-neutral-950/50">
+                <div className="text-sm">
+                  <div className="flex items-center gap-2"><Calendar className="h-4 w-4"/> <span>{date || "Pick a date"}</span></div>
+                  <div className="flex items-center gap-2 mt-1"><Clock className="h-4 w-4"/> <span>{time}</span></div>
+                  <div className="flex items-center gap-2 mt-1"><Users className="h-4 w-4"/> <span>{party} guests</span></div>
+                </div>
+                <div className="text-sm">
+                  <div className="flex justify-between"><span>Package</span><span>{pkgObj?.name}</span></div>
+                  <div className="flex justify-between"><span>Base</span><span>{currency(pkgObj?.price || 0)} × {party}</span></div>
+                  <div className="flex justify-between"><span>Add‑ons</span><span>{currency(addOnsTotal)} × {party}</span></div>
+                  {party >= 6 && <div className="flex justify-between"><span>Group discount</span><span className="text-emerald-300">−10%</span></div>}
+                  <div className="flex justify-between"><span>Tax (12%)</span><span>{currency(tax)}</span></div>
+                  <div className="flex justify-between font-extrabold text-lg mt-2"><span>Total</span><span>{currency(party>=6 ? total*0.9 : total)}</span></div>
+                </div>
+              </div>
+
+              <button disabled={!valid} className="px-6 py-3 rounded-2xl font-semibold bg-gradient-to-r from-cyan-400 to-emerald-400 text-neutral-900 disabled:opacity-50">Confirm booking</button>
+              {submitted && (
+                <div className="flex items-center gap-2 text-emerald-300 text-sm"><CheckCircle2 className="h-5 w-5"/> Booking saved! Check your downloads for a CSV export if needed.</div>
+              )}
+            </form>
+
+            {/* Admin lite */}
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-xl">Today’s bookings</h3>
+                <button onClick={exportCSV} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 text-sm hover:bg-white/10"><Download className="h-4 w-4"/> Export CSV</button>
+              </div>
+              <div className="mt-4 grid gap-3 max-h-[420px] overflow-auto pr-1">
+                {bookings.length === 0 && <div className="text-sm text-white/60">No bookings yet. Submit the form to see them here.</div>}
+                {bookings.map(b => (
+                  <div key={b.id} className="rounded-xl border border-white/10 bg-neutral-900/60 p-4 text-sm">
+                    <div className="font-semibold">{packages.find(p=>p.id===b.pkg)?.name} · {b.date} {b.time}</div>
+                    <div className="text-white/70">{b.name} — {b.party} guests · {currency(b.total)}</div>
+                    {b.selectedAddOns.length>0 && <div className="text-white/60 mt-1">Add‑ons: {b.selectedAddOns.map(a=>addOns.find(x=>x.id===a)?.label).join(", ")}</div>}
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs text-white/50 mt-3">Data is stored locally in your browser for demo purposes. Connect to your backend or Google Sheets later.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact / Map */}
+      <section id="contact" className="max-w-7xl mx-auto px-6 py-20">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Find us</h2>
+        <p className="mt-2 text-white/70 max-w-2xl">Sagana River valley, Kenya (example). Update the pin below with your exact location.</p>
+        <div className="mt-6 grid lg:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-white/10 overflow-hidden">
+            <iframe title="Map" src="https://www.google.com/maps?q=Sagana%20River%20Kenya&output=embed" className="w-full h-[360px]"></iframe>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 grid gap-3 text-sm">
+            <div className="flex items-center gap-2"><MapPin className="h-4 w-4"/> Sagana, Kenya</div>
+            <div className="flex items-center gap-2"><PhoneCall className="h-4 w-4"/> +254 7xx xxx xxx</div>
+            <div className="flex items-center gap-2"><Mail className="h-4 w-4"/> bookings@napoleonsrafting.camp</div>
+            <p className="text-white/70">Open daily 08:00 – 17:30 · Weather-permitting.</p>
+            <div className="text-xs text-white/50">Replace contact details with your real ones. Add WhatsApp click‑to‑chat links too.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-10 text-sm text-white/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>© {new Date().getFullYear()} Napoleon’s Rafting Camp. All rights reserved.</div>
+          <div className="flex items-center gap-4">
+            <a href="#booking" className="px-4 py-2 rounded-xl border border-white/15 hover:bg-white/10">Reserve now</a>
+            <a href="#hero" className="px-4 py-2 rounded-xl border border-white/15 hover:bg-white/10">Back to top</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

@@ -1,0 +1,191 @@
+:root {
+  --bg-color: #F8F5F2;         
+  --primary-color: #1C2A3A;    
+  --secondary-color: #4DA8DA;  
+  --auxilliary-color: #E3B23C;     
+
+  --card-color: #FFFFFF;
+  --text-color: #2B2B2B;
+  --muted-text: #7A7A7A;
+  --border-color: #E6E2DD;
+
+  --padding-horizontal: 100px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+header.nav {
+    height: 80vh;
+  min-height: 400px; /* hero height */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.4)),
+    url("../images/nap1.jpg"); 
+  background-size: cover;
+  background-position:  center center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Nav content */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--padding-horizontal);
+  color:white;
+}
+
+/* Brand */
+.name h1 {
+  line-height: 1.1;
+  font-size: 36px;
+  letter-spacing: 1px;
+}
+
+.name h1 span {
+  display: block;
+}
+
+/* Links */
+nav a {
+  color: white;
+  
+  margin-left: 24px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: var(--auxilliary-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- HOME -->
+  <div class="name"><h2>Explore Our Thrilling Activities </h2><br>
+    <h3>Adventure awaits at Napoleon's Rafting Camp!</h3></div>
+    
+<section id="home" class="hero">
+  <div class="slider">
+    <img src="" class="slide active">
+    <!-- <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e0" class="slide">
+    <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64" class="slide"> -->
+  </div>
+
+  <div class="hero-content">
+    <h2>Napoleon’s Rafting Camp</h2>
+    <p>Adventure • Nature • Comfort</p>
+
+    <div class="home-summary">
+      <div class="summary-card">
+        <h4>Accommodation</h4>
+        <p>Tents & Modern Rooms</p>
+      </div>
+      <div class="summary-card">
+        <h4>Activities</h4>
+        <p>Rafting, Kayaking, Ziplining</p>
+      </div>
+      <div class="summary-card">
+        <h4>Nature</h4>
+        <p>Bonfires, Walks, Team Building</p>
+      </div>
+    </div>
+
+    <a href="#contact" class="btn">Plan Your Visit</a>
+  </div>
+
+  <div class="slider-controls">
+    <span onclick="prevSlide()">❮</span>
+    <span onclick="nextSlide()">❯</span>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities" class="section cards">
+  <h2>Our Experiences</h2>
+
+  <div class="card">Rafting & Kayaking</div>
+  <div class="card">Boat Riding & Swimming</div>
+  <div class="card">Ziplining & Biking</div>
+  <div class="card">Camping & Bonfires</div>
+  <div class="card">Team Building</div>
+  <div class="card">Nature Walks</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section gallery">
+  <h2>Gallery</h2>
+  <img src="https://images.unsplash.com/photo-1501612780327-45045538702b">
+  <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e0">
+  <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64">
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section booking">
+  <h2>Contact Us</h2>
+
+  <form id="bookingForm">
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Phone Number" required>
+    <select>
+      <option>Rafting</option>
+      <option>Camping</option>
+      <option>Team Building</option>
+      <option>Ziplining</option>
+    </select>
+    <button type="submit">Send Request</button>
+  </form>
+
+  <p id="msg"></p>
+</section>
+
+<footer>
+  <p>© 2026 Napoleon’s Rafting Camp</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

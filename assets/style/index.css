@@ -1,0 +1,122 @@
+:root {
+  --bg-color: #F8F5F2;         
+  --primary-color: #1C2A3A;    
+  --secondary-color: #4DA8DA;  
+  --auxilliary-color: #E3B23C;     
+
+  --card-color: #FFFFFF;
+  --text-color: #2B2B2B;
+  --muted-text: #7A7A7A;
+  --border-color: #E6E2DD;
+
+  --padding-horizontal: 100px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+header.nav{
+    background-color: var(--primary-color);
+}
+.name h1{
+    font-family: 'Times New Roman', Times, serif;
+}
+/* Nav content */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--padding-horizontal);
+  color:white;
+}
+/* Links */
+nav a {
+  color: white;
+  
+  margin-left: 24px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: var(--auxilliary-color);
+}
+/* homeImage */
+#homeImage{
+    height: 80vh;
+  min-height: 400px; /* hero height */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+    url("../images/nap1.jpg"); 
+  background-size: cover;
+  background-position:  center center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+#homelImage>div{
+    color:darkblue;
+    font-size: large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   
+    }
+
+#exploreActivities{
+  margin-top: 10px;
+  padding: 60px var(--padding-horizontal);
+  text-align: center;
+}
+
+#exploreActivitie h1 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 2px;
+}
+
+#exploreActivitie p {
+  margin-top: 0px;
+  color: var(--muted-text);
+}
+/* .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  height: 220px;
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Individual backgrounds */
+/* .card-1 { background-image: url("../images/nap1.jpg"); }
+.card-2 { background-image: url("images/kayak.jpg"); }
+.card-3 { background-image: url("images/rafting.jpg"); }
+.card-4 { background-image: url("images/camping.jpg"); }
+.card-5 { background-image: url("images/zipline.jpg"); }
+.card-6 { background-image: url("images/swimming.jpg"); }
+.card-7 { background-image: url("images/bonfire.jpg"); }
+.card-8 { background-image: url("images/nature.jpg"); } */ */
