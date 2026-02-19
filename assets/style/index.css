@@ -56,7 +56,6 @@ nav a:hover {
   object-fit: contain; /* shows full image */
 }
 
-
 .slide {
   background-size: 100% auto; /* full width, height adjusts to keep ratio */
 
@@ -74,8 +73,9 @@ nav a:hover {
 }
 
 .hero-text {
-  position: relative;
+  position:relative;
   z-index: 2;
+  font-size: x-large;
   color: white;
   text-align: center;
   top: 50%;
@@ -158,7 +158,7 @@ nav a:hover {
 .card-6 { background-image: url("../images/swimming.jpg"); }
 .card-7 { background-image: url("../images/ziplining.JPG"); }
 .card-8 { background-image: url("../images/nap1.jpg"); }
-.card-9 { background-image: url("../images/teambuilding.jpg"); }
+.card-9 { background-image: url("../images/teambuilding2.jpg"); }
 .card-10 { background-image: url("../images/archery.jpg"); }
 .card-11 { background-image: url("../images/food.jpg"); }
 
@@ -167,3 +167,134 @@ nav a:hover {
   :root { --padding-horizontal: 40px; }
   .activities { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* accommodation */
+.section-padding {
+  padding: 60px 20px;
+  background-color: #f8f5f2;
+  color: #1c2a3a;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.section-intro {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #4d4d4d;
+}
+
+.accommodation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.accommodation-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.accommodation-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.accommodation-card h3 {
+  margin: 15px;
+  font-size: 1.3rem;
+  color: #1c2a3a;
+}
+
+.accommodation-card p {
+  margin: 0 15px 15px 15px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.accommodation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+
+
+/* 
+footer */
+.footer {
+  
+  background: var(--primary-color);
+  color: white;
+  padding: 40px 20px 20px;
+  font-family: sans-serif;
+}
+
+.footer-content {
+  font-size: smaller;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-info h3 {
+  color: #ff9900; /* Primary color */
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.footer-info p {
+ 
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.social-icons a {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: white;
+  transition: 0.3s ease;
+}
+
+/* Brand Colors */
+.social-icons a.email { background: #ff9900; color: white; }
+.social-icons a.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; }
+.social-icons a.facebook { background: #1877F2; color: white; }
+.social-icons a.twitter { background: #1DA1F2; color: white; }
+.social-icons a.whatsapp { background: #25D366; color: white; }
+
+/* Hover effect */
+.social-icons a:hover {
+  transform: translateY(-5px) scale(1.1);
+  opacity: 0.9;
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 0px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
