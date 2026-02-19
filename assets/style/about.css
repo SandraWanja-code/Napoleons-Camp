@@ -136,3 +136,94 @@ body {
   }
 }
 .social-icons a.email { background: #E3B23C; color: white; }
+.footer {
+  background: var(--primary-color);
+  color: white;
+  padding: 35px 10%;
+  font-family: sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footer-info h3 {
+  color: #ff9900;
+  margin-bottom: 12px;
+}
+
+/* Contact Row (Now Horizontal + Compact) */
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.9rem;
+}
+
+.footer-contact span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.9;
+}
+
+.footer-contact strong {
+  color: var(--secondary-color);
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  font-size: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+
+/* Brand Colors */
+/* .social-icons a.email { background: #ff9900; }
+.social-icons a.instagram {
+  background: radial-gradient(circle at 30% 107%, 
+  #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+} */
+/* .social-icons a.facebook { background: #1877F2; } */
+/* .social-icons a.twitter { background: #1DA1F2; }
+.social-icons a.whatsapp { background: #25D366; } */
+
+.social-icons a:hover {
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* Copyright */
+.copyright {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .social-icons {
+    margin-top: 15px;
+  }
+}
+
+
