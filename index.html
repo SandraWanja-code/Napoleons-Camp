@@ -7,8 +7,12 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Storm&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    html{
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
 
@@ -79,12 +83,6 @@
     <div class="card card-6">
       <h2>Swimming</h2>
       <p>Cool off in calm waters or jump from waterfalls.</p>
-      <button>Explore</button>
-    </div>
-
-    <div class="card card-7">
-      <h2>Ziplining</h2>
-      <p>Fly above treetops and feel the thrill.</p>
       <button>Explore</button>
     </div>
 
@@ -186,8 +184,15 @@ Experience the perfect balance between wilderness and comfort in our Dome and Sa
       <div class="contact-details">
         <h3>Get In Touch</h3>
 
-        <p><strong>📞 Phone:</strong> +254 722 654 632 | 0717 345 569</p>
-        <p><strong>📧 Email:</strong> info@napoleonsraftingcamp.com</p>
+        <p>
+          <strong>📞 Phone:</strong>
+          <a href="tel: +254722654632">+254 722 654 632</a>  | 
+          <a href="tel: 0790643877">0717 345 569</a>
+        </p>
+        <p>
+          <strong>📧 Email:</strong>
+          <a href="mailto:info@napoleonsraftingcamp.com">info@napoleonsraftingcamp.com</a>
+        </p>
         <p><strong>📍 Location:</strong> Sagana, Kenya</p>
 
         <a href="https://wa.me/254722654632" class="whatsapp-btn">
@@ -207,8 +212,8 @@ Experience the perfect balance between wilderness and comfort in our Dome and Sa
 </section>
 
 
- 
-
+<!--  
+footer -->
 <footer class="footer">
 
   <div class="footer-content">
@@ -219,15 +224,20 @@ Experience the perfect balance between wilderness and comfort in our Dome and Sa
 
       <div class="footer-contact">
         <span>
-          <strong>Email:</strong>
-          info@napoleonsraftingcamp.com |
-          peterkamaukariuki@gmail.com
-        </span>
+  <strong>Email:</strong>
+  <a href="mailto:info@napoleonsraftingcamp.com">
+    info@napoleonsraftingcamp.com
+  </a> |
+  <a href="mailto:peterkamaukariuki@gmail.com">
+    peterkamaukariuki@gmail.com
+  </a>
+</span>
 
-        <span>
-          <strong>Phone:</strong>
-          +254 722 654 632 | 0717 345 569 | 0790 643 877
-        </span>
+<span>
+  <strong>Phone:</strong>
+  <a href="tel:+254722654632">+254 722 654 632</a> |
+  <a href="tel:+254790643877">0790 643 877</a>
+</span>
 
         <span>
           <strong>Location:</strong>
@@ -241,8 +251,11 @@ Experience the perfect balance between wilderness and comfort in our Dome and Sa
       <a href="mailto:info@napoleonsraftingcamp.com" class="email"><i class="fas fa-envelope"></i></a>
       <a href="https://www.instagram.com/napoleonsraftingcampsagana/" class="instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.facebook.com/NapoleonsRaftingCamp/" class="facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="x">
+  <i class="fa-brands fa-x-twitter"></i>
+</a>
       <a href="https://wa.me/254722654632" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+      
     </div>
 
   </div>
@@ -252,7 +265,9 @@ Experience the perfect balance between wilderness and comfort in our Dome and Sa
 </footer>
 
 
-
+<!-- SCROLL TO TOP BUTTON (place here) -->
+<button id="scrollTopBtn">↑</button>
+<button id="scrollBottomBtn">↓</button>
 <script src="assets/js/slider.js" defer></script>
 </body>
-</html>
+</html> 

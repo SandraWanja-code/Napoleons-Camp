@@ -27,3 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startSlider();
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const topBtn = document.getElementById("scrollTopBtn");
+  const bottomBtn = document.getElementById("scrollBottomBtn");
+
+  // Show buttons when user scrolls down
+  window.addEventListener("scroll", () => {
+    const scrolled = window.scrollY > 300;
+    topBtn.style.display = scrolled ? "block" : "none";
+    bottomBtn.style.display = scrolled ? "block" : "none";
+  });
+
+  // Scroll to top
+  topBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Scroll to bottom
+  bottomBtn.addEventListener("click", () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  });
+});
