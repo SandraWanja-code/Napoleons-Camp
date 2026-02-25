@@ -13,6 +13,38 @@ body {
   box-shadow: 0 2px 15px rgba(0,0,0,0.05);
 }
 
+.nav nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav h1 {
+  color: white;
+  font-size: 22px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.nav div {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav a:hover,
+.nav a.active {
+  color: #E3B23C;
+}
+
 /* HERO */
 .about-hero {
   height: 45vh;
